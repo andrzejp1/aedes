@@ -1,0 +1,20 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          aedes
+# Required-Start:    $remote_fs $syslog networking
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Simple script to start a program at boot
+### END INIT INFO
+
+cd /home/pi/aedes
+#mount >mount.log 2>&1
+#Sleep 15: workaround for not being able to get dependencies right
+sleep 15
+git pull >gitpull.log 2>&1
+(python main.py) >autorun.log 2>&1 &
+
+exit 0
+

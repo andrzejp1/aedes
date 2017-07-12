@@ -29,7 +29,7 @@ class LabState:
         self.Vent = Switch('vent-state', json)
 
 config = ConfigParser.ConfigParser()
-config.read('/media/pi/data/aedes.cfg')
+config.read('./aedes.cfg')
 
 def CurrentStateNoCache():
     url=config.get('main','url')
