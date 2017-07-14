@@ -65,4 +65,47 @@ def alarm_flash(c,duration=30):
             Fill(c)
             time.sleep(0.2)
 
+def pulse_in(c):
+    radiusSq = 0.25;
+    sense = SenseHat()
+    while radiusSq <= 26:
+        pixels = []
+        #radiusSq = radius * radius
+        y = -3.5
+        while y <= 3.5:
+            x = -3.5
+            while x <= 3.5:
+                rsq = x * x + y * y
+                if rsq <= radiusSq:
+                    pixels.append(c)
+                else:
+                    pixels.append([0, 0, 0])
+                x += 1.0
+            y += 1.0
+        sense.set_pixels(pixels)
+        radiusSq += 1.0
+        #time.sleep(0.02)
 
+def pulse_raw(c,rSqFrom,rSqTo,rSqDelta):
+    radiusSq = rSqFrom;
+    sense = SenseHat()
+    while (rSqTo-radiusSq)*rSqDelta>-abs(rSqDelta):
+        pixels = []
+        y = -3.5
+        while y <= 3.5:
+            x = -3.5
+            while x <= 3.5:
+                rsq = x * x + y * y
+                if rsq <= radiusSq:
+                    pixels.append(c)
+                else:
+                    pixels.append([0, 0, 0])
+                x += 1.0
+            y += 1.0
+        sense.set_pixels(pixels)
+        radiusSq += rSqDelta
+        #time.sleep(0.02)
+
+def pulse(c):
+    pulse_raw(c,0,26,0.8)
+    pulse_raw(c,26,0,-0.8)
