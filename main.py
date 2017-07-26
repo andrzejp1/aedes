@@ -1,6 +1,8 @@
 #!/usr/bin/python
 import time
 import pprint
+import os
+import datetime
 from sense_hat import SenseHat
 
 import lab
@@ -28,6 +30,14 @@ def StateChangeToAction(prv,cur):
         return ('change', [0,0,255])
     return ('idle')
 
+def EasterEgg(state):
+    today = datetime.datetime.now()
+    if today.day()==1 and today.month()==22:
+    #if today.day==26 and today.month==7:
+	return('play', 'media/1.mp4')
+    return ('idle')
+
+
 previousState =  lab.CurrentStatus()
 currentState = previousState
 def GetAction():
@@ -35,7 +45,9 @@ def GetAction():
     global currentState
     previousState = currentState
     currentState = lab.CurrentStatus()
-    a = StateChangeToAction(previousState, currentState)
+    a = EasterEgg(currentState)
+    if a[0] == 'idle':
+	a = StateChangeToAction(previousState, currentState)
     if a[0] == 'idle':
         a = StateToAction(currentState)
     return a
@@ -55,5 +67,9 @@ while True:
     elif type == 'change':
         for i in range(1,20):
             effects.pulse(a[1])
+    elif type=='play':
+	command = "mplayer " + a[1] + " 1>/dev/null 2>/dev/null"
+	os.system(command)
+	#effects.rainbow()
     else:
         effects.rainbow()
