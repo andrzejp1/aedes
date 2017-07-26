@@ -32,7 +32,7 @@ def StateChangeToAction(prv,cur):
 
 def EasterEgg(state):
     today = datetime.datetime.now()
-    if today.day()==1 and today.month()==22:
+    if today.day==1 and today.month==22:
     #if today.day==26 and today.month==7:
 	return('play', 'media/1.mp4')
     return ('idle')
@@ -70,6 +70,13 @@ while True:
     elif type=='play':
 	command = "mplayer " + a[1] + " 1>/dev/null 2>/dev/null"
 	os.system(command)
+	effects.pulse([255,0,0])
+	effects.pulse([0,255,0])
+	effects.pulse([0,0,255])
+	effects.pulse([255,255,255])
+	effects.pulse([0,0,255])
+	effects.pulse([0,255,0])
+	effects.pulse([255,0,0])
 	#effects.rainbow()
     else:
         effects.rainbow()
