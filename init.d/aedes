@@ -13,6 +13,16 @@ cd /home/pi/aedes
 #mount >mount.log 2>&1
 #Sleep 15: workaround for not being able to get dependencies right
 sleep 15
+# forcing nat off does not work, using IP directly
+#noip2  -c /usr/local/etc/no-ip2-lan.conf  -M -I eth0  -F
+#noip2  -c /usr/local/etc/no-ip2-wlan.conf -M -I wlan0 -F
+
+eth0ip=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+wlan0ip=$(/sbin/ifconfig wlan0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+noip2 -M -I eth0  -i $eth0ip -c /usr/local/etc/no-ip2-lan.conf
+noip2 -M -I wlan0 -i $wlan0ip -c /usr/local/etc/no-ip2-wlan.conf
+
+
 git pull >gitpull.log 2>&1
 (python main.py) >autorun.log 2>&1 &
 
